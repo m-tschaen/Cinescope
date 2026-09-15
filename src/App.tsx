@@ -2,10 +2,12 @@ import { useState } from "react"
 import Navbar from "./components/Navbar"
 import MovieGrid from "./components/MovieGrid"
 import Favorites from "./components/Favorites"
+import SearchBar from "./components/SearchBar"
 import { movies } from "./data/movies"
 
 function App() {
   const [favorites, setFavorites] = useState<number[]>([])
+  const [search, setSearch] = useState("")
 
   function toggleFavorite(id: number) {
     if (favorites.includes(id)) {
@@ -13,6 +15,10 @@ function App() {
     } else {
       setFavorites([...favorites, id])
     }
+  }
+
+  function resetSearch() {
+    setSearch("")
   }
 
   return (
@@ -26,12 +32,19 @@ function App() {
           Explorez des films, trouvez vos favoris et construisez votre bibliothèque personnelle.
         </p>
 
+        <SearchBar
+          search={search}
+          onSearchChange={setSearch}
+        />
+
         <section>
           <h2>Films populaires</h2>
 
           <MovieGrid
             favorites={favorites}
             onToggleFavorite={toggleFavorite}
+            search={search}
+            onResetSearch={resetSearch}
           />
         </section>
 
