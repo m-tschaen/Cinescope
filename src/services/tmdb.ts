@@ -21,3 +21,23 @@ export async function getPopularMovies() {
 
   return data
 }
+
+export async function searchMovies(query: string) {
+  const response = await fetch(
+    `${TMDB_URL}/search/movie?query=${encodeURIComponent(query)}&language=fr-FR`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: "application/json",
+      },
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error("Erreur lors de la recherche")
+  }
+
+  const data = await response.json()
+
+  return data
+}

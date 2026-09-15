@@ -1,11 +1,13 @@
 type SearchBarProps = {
   search: string
   onSearchChange: (value: string) => void
+  onSearch: () => void
 }
 
 function SearchBar({
   search,
   onSearchChange,
+  onSearch,
 }: SearchBarProps) {
   return (
     <div>
@@ -19,7 +21,7 @@ function SearchBar({
         onChange={(event) => onSearchChange(event.target.value)}
       />
 
-      <button>Rechercher</button>
+      <button onClick={onSearch}>Rechercher</button>
     </div>
   )
 }
