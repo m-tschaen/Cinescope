@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SearchBar from "../components/SearchBar"
 import MovieGrid from "../components/MovieGrid"
 
@@ -12,6 +12,10 @@ function Search({
   onToggleFavorite,
 }: SearchProps) {
   const [search, setSearch] = useState("")
+
+  useEffect(() => {
+    console.log("Recherche modifiée :", search)
+  }, [search])
 
   function resetSearch() {
     setSearch("")
