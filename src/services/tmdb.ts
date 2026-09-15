@@ -41,3 +41,27 @@ export async function searchMovies(query: string) {
 
   return data
 }
+
+export async function getMovieDetails(id: number) {
+  const response = await fetch(
+    `${TMDB_URL}/movie/${id}?language=fr-FR`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: "application/json",
+      },
+    }
+  )
+
+  if (response.status === 404) {
+    return null
+  }
+
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération du film")
+  }
+
+  const data = await response.json()
+
+  return data
+}
