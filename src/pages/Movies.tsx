@@ -15,13 +15,15 @@ function Movies({
   const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
   async function loadMovies() {
     try {
       setLoading(true)
       setError(false)
 
-      const data = await getPopularMovies()
+      const data = await getPopularMovies(page)
 
       const formattedMovies: Movie[] = data.results.map(
         (movie: {
@@ -42,6 +44,7 @@ function Movies({
       )
 
       setMovies(formattedMovies)
+      setTotalPages(data.total_pages)
     } catch {
       setError(true)
     } finally {
@@ -51,7 +54,7 @@ function Movies({
 
   useEffect(() => {
     loadMovies()
-  }, [])
+  }, [page])
 
   if (loading) {
     return (
@@ -66,11 +69,16 @@ function Movies({
     return (
       <main>
         <h1>Films</h1>
+
         <p>Impossible de charger les films.</p>
+
         <p>
           Une erreur est survenue lors de la récupération des données. Veuillez réessayer.
         </p>
-        <button onClick={loadMovies}>Réessayer</button>
+
+        <button onClick={loadMovies}>
+          Réessayer
+        </button>
       </main>
     )
   }
@@ -89,6 +97,26 @@ function Movies({
           />
         ))}
       </section>
+
+      <div>
+        <button
+          onClick={() => setPage(page - 1)}
+          disabled={page === 1}
+        >
+          Page précédente
+        </button>
+
+        <p>
+          Page {page} sur {totalPages}
+        </p>
+
+        <button
+          onClick={() => setPage(page + 1)}
+          disabled={page === totalPages}
+        >
+          Page suivante
+        </button>
+      </div>
     </main>
   )
 }

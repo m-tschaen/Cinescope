@@ -2,9 +2,9 @@ const TMDB_URL = "https://api.themoviedb.org/3"
 
 const token = import.meta.env.VITE_TMDB_TOKEN
 
-export async function getPopularMovies() {
+export async function getPopularMovies(page: number = 1) {
   const response = await fetch(
-    `${TMDB_URL}/movie/popular?language=fr-FR`,
+    `${TMDB_URL}/movie/popular?language=fr-FR&page=${page}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
