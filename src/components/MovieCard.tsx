@@ -2,9 +2,15 @@ import type { Movie } from "../types/Movie"
 
 type MovieCardProps = {
   movie: Movie
+  isFavorite: boolean
+  onToggleFavorite: (id: number) => void
 }
 
-function MovieCard({ movie }: MovieCardProps) {
+function MovieCard({
+  movie,
+  isFavorite,
+  onToggleFavorite,
+}: MovieCardProps) {
   return (
     <article>
       <img src={movie.poster} alt={movie.title} />
@@ -13,7 +19,10 @@ function MovieCard({ movie }: MovieCardProps) {
       <p>Année : {movie.releaseDate}</p>
       <p>Note : {movie.rating}</p>
 
-      <button>Ajouter aux favoris</button>
+      <button onClick={() => onToggleFavorite(movie.id)}>
+        {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+      </button>
+
       <button>Voir le film</button>
     </article>
   )

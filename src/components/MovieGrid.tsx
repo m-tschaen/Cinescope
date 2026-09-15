@@ -1,3 +1,4 @@
+import { useState } from "react"
 import MovieCard from "./MovieCard"
 import type { Movie } from "../types/Movie"
 
@@ -59,10 +60,25 @@ const movies: Movie[] = [
 ]
 
 function MovieGrid() {
+  const [favorites, setFavorites] = useState<number[]>([])
+
+  function toggleFavorite(id: number) {
+    if (favorites.includes(id)) {
+      setFavorites(favorites.filter((favoriteId) => favoriteId !== id))
+    } else {
+      setFavorites([...favorites, id])
+    }
+  }
+
   return (
     <section>
       {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
+        <MovieCard
+          key={movie.id}
+          movie={movie}
+          isFavorite={favorites.includes(movie.id)}
+          onToggleFavorite={toggleFavorite}
+        />
       ))}
     </section>
   )
