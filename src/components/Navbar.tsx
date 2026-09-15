@@ -1,15 +1,17 @@
+import { Link } from "react-router-dom"
+
 function Navbar() {
   return (
     <nav>
-      <span>CineScope</span>
+      <Link to="/">CineScope</Link>
 
-      <span>Accueil</span>
-      <span>Films</span>
-      <span>Favoris</span>
-      <span>Bibliothèque</span>
-      <span>Profil</span>
+      <Link to="/">Accueil</Link>
+      <Link to="/movies">Films</Link>
+      <Link to="/favorites">Favoris</Link>
+      <Link to="/library">Bibliothèque</Link>
+      <Link to="/profile">Profil</Link>
 
-      <button>Rechercher</button>
+      <Link to="/search">Rechercher</Link>
     </nav>
   )
 }

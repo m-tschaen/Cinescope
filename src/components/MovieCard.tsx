@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import type { Movie } from "../types/Movie"
 
 type MovieCardProps = {
@@ -23,7 +24,9 @@ function MovieCard({
         {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
       </button>
 
-      <button>Voir le film</button>
+      <Link to={`/movies/${movie.id}`}>
+        Voir le film
+      </Link>
     </article>
   )
 }

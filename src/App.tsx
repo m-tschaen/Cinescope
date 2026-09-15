@@ -1,13 +1,17 @@
 import { useState } from "react"
+import { Routes, Route } from "react-router-dom"
+
 import Navbar from "./components/Navbar"
-import MovieGrid from "./components/MovieGrid"
-import Favorites from "./components/Favorites"
-import SearchBar from "./components/SearchBar"
-import { movies } from "./data/movies"
+import Home from "./pages/Home"
+import Movies from "./pages/Movies"
+import MovieDetails from "./pages/MovieDetails"
+import FavoritesPage from "./pages/FavoritesPage"
+import Library from "./pages/Library"
+import Profile from "./pages/Profile"
+import Search from "./pages/Search"
 
 function App() {
   const [favorites, setFavorites] = useState<number[]>([])
-  const [search, setSearch] = useState("")
 
   function toggleFavorite(id: number) {
     if (favorites.includes(id)) {
@@ -17,43 +21,65 @@ function App() {
     }
   }
 
-  function resetSearch() {
-    setSearch("")
-  }
-
   return (
     <>
       <Navbar />
 
-      <main>
-        <h1>Découvrez votre prochain film</h1>
-
-        <p>
-          Explorez des films, trouvez vos favoris et construisez votre bibliothèque personnelle.
-        </p>
-
-        <SearchBar
-          search={search}
-          onSearchChange={setSearch}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+            />
+          }
         />
 
-        <section>
-          <h2>Films populaires</h2>
-
-          <MovieGrid
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-            search={search}
-            onResetSearch={resetSearch}
-          />
-        </section>
-
-        <Favorites
-          movies={movies}
-          favorites={favorites}
-          onToggleFavorite={toggleFavorite}
+        <Route
+          path="/movies"
+          element={
+            <Movies
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+            />
+          }
         />
-      </main>
+
+        <Route
+          path="/movies/:id"
+          element={
+            <MovieDetails
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+            />
+          }
+        />
+
+        <Route
+          path="/favorites"
+          element={
+            <FavoritesPage
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+            />
+          }
+        />
+
+        <Route path="/library" element={<Library />} />
+
+        <Route path="/profile" element={<Profile />} />
+
+        <Route
+          path="/search"
+          element={
+            <Search
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+            />
+          }
+        />
+      </Routes>
     </>
   )
 }
