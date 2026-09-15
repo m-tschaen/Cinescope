@@ -14,7 +14,11 @@ function MovieCard({
 }: MovieCardProps) {
   return (
     <article>
-      <img src={movie.poster} alt={movie.title} />
+      {movie.poster ? (
+        <img src={movie.poster} alt={movie.title} />
+      ) : (
+        <p>Affiche indisponible</p>
+      )}
 
       <h2>{movie.title}</h2>
       <p>Année : {movie.releaseDate}</p>

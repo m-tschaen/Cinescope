@@ -96,11 +96,13 @@ function MovieDetails({
     <main>
       <h1>{movie.title}</h1>
 
-      {movie.poster_path && (
+      {movie.poster_path ? (
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
         />
+      ) : (
+        <p>Affiche indisponible</p>
       )}
 
       <p>Date de sortie : {movie.release_date}</p>
