@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Routes, Route } from "react-router-dom"
 
 import Navbar from "./components/Navbar"
@@ -11,8 +11,23 @@ import Profile from "./pages/Profile"
 import Search from "./pages/Search"
 import NotFound from "./pages/NotFound"
 
+import { getPopularMovies } from "./services/tmdb"
+
 function App() {
   const [favorites, setFavorites] = useState<number[]>([])
+
+  useEffect(() => {
+    async function testTMDB() {
+      try {
+        const data = await getPopularMovies()
+        console.log("Réponse TMDB :", data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    testTMDB()
+  }, [])
 
   function toggleFavorite(id: number) {
     if (favorites.includes(id)) {
