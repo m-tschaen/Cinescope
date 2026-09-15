@@ -9,6 +9,7 @@ import FavoritesPage from "./pages/FavoritesPage"
 import Library from "./pages/Library"
 import Profile from "./pages/Profile"
 import Search from "./pages/Search"
+import NotFound from "./pages/NotFound"
 
 function App() {
   const [favorites, setFavorites] = useState<number[]>([])
@@ -66,9 +67,15 @@ function App() {
           }
         />
 
-        <Route path="/library" element={<Library />} />
+        <Route
+          path="/library"
+          element={<Library />}
+        />
 
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
 
         <Route
           path="/search"
@@ -78,6 +85,11 @@ function App() {
               onToggleFavorite={toggleFavorite}
             />
           }
+        />
+
+        <Route
+          path="*"
+          element={<NotFound />}
         />
       </Routes>
     </>
