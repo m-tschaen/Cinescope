@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import useMovieDetails from "../hooks/useMovieDetails"
 import { useAppContext } from "../context/AppContext"
@@ -18,6 +19,20 @@ function MovieDetails() {
     error,
     notFound,
   } = useMovieDetails(Number(id))
+
+  const [personalRating, setPersonalRating] = useState<number | null>(
+    null
+  )
+  const [ratingMessage, setRatingMessage] = useState("")
+
+  function handleSaveRating() {
+    if (personalRating === null) {
+      setRatingMessage("Veuillez sélectionner une note.")
+      return
+    }
+
+    setRatingMessage("Votre note a été enregistrée.")
+  }
 
   if (loading) {
     return (
@@ -113,6 +128,34 @@ function MovieDetails() {
       >
         Ajouter à la bibliothèque
       </button>
+
+      <section>
+        <h2>Ma note</h2>
+
+        {[1, 2, 3, 4, 5].map((rating) => (
+          <button
+            key={rating}
+            type="button"
+            onClick={() => {
+              setPersonalRating(rating)
+              setRatingMessage("")
+            }}
+          >
+            {rating <= (personalRating ?? 0) ? "★" : "☆"}
+          </button>
+        ))}
+
+        <button
+          type="button"
+          onClick={handleSaveRating}
+        >
+          Enregistrer ma note
+        </button>
+
+        {ratingMessage && (
+          <p>{ratingMessage}</p>
+        )}
+      </section>
 
       <Link to="/movies">
         Retour aux films
