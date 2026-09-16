@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { Link } from "react-router-dom"
 import type { Movie } from "../types/Movie"
 
@@ -25,7 +26,9 @@ function MovieCard({
       <p>Note : {movie.rating}</p>
 
       <button onClick={() => onToggleFavorite(movie)}>
-        {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+        {isFavorite
+          ? "Retirer des favoris"
+          : "Ajouter aux favoris"}
       </button>
 
       <Link to={`/movies/${movie.id}`}>
@@ -35,4 +38,4 @@ function MovieCard({
   )
 }
 
-export default MovieCard
+export default memo(MovieCard)

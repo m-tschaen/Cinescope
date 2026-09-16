@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useReducer,
   type ReactNode,
@@ -11,9 +12,10 @@ import type {
   LibraryStatus,
 } from "../types/LibraryMovie"
 
-type FavoritesAction =
-  | { type: "ADD"; movie: Movie }
-  | { type: "REMOVE"; id: number }
+type FavoritesAction = {
+  type: "TOGGLE"
+  movie: Movie
+}
 
 type LibraryAction =
   | {
@@ -55,13 +57,19 @@ function favoritesReducer(
   action: FavoritesAction
 ): Movie[] {
   switch (action.type) {
-    case "ADD":
-      return [...state, action.movie]
-
-    case "REMOVE":
-      return state.filter(
-        (movie) => movie.id !== action.id
+    case "TOGGLE": {
+      const isFavorite = state.some(
+        (movie) => movie.id === action.movie.id
       )
+
+      if (isFavorite) {
+        return state.filter(
+          (movie) => movie.id !== action.movie.id
+        )
+      }
+
+      return [...state, action.movie]
+    }
 
     default:
       return state
@@ -119,52 +127,47 @@ export function AppProvider({
     []
   )
 
-  function toggleFavorite(movie: Movie) {
-    const isFavorite = favorites.some(
-      (favorite) => favorite.id === movie.id
-    )
+  const toggleFavorite = useCallback((movie: Movie) => {
+    dispatchFavorites({
+      type: "TOGGLE",
+      movie,
+    })
+  }, [])
 
-    if (isFavorite) {
-      dispatchFavorites({
-        type: "REMOVE",
-        id: movie.id,
-      })
-    } else {
-      dispatchFavorites({
+  const addToLibrary = useCallback(
+    (
+      movie: Movie,
+      status: LibraryStatus
+    ) => {
+      dispatchLibrary({
         type: "ADD",
         movie,
+        status,
       })
-    }
-  }
+    },
+    []
+  )
 
-  function addToLibrary(
-    movie: Movie,
-    status: LibraryStatus
-  ) {
-    dispatchLibrary({
-      type: "ADD",
-      movie,
-      status,
-    })
-  }
+  const changeLibraryStatus = useCallback(
+    (
+      id: number,
+      status: LibraryStatus
+    ) => {
+      dispatchLibrary({
+        type: "CHANGE_STATUS",
+        id,
+        status,
+      })
+    },
+    []
+  )
 
-  function changeLibraryStatus(
-    id: number,
-    status: LibraryStatus
-  ) {
-    dispatchLibrary({
-      type: "CHANGE_STATUS",
-      id,
-      status,
-    })
-  }
-
-  function removeFromLibrary(id: number) {
+  const removeFromLibrary = useCallback((id: number) => {
     dispatchLibrary({
       type: "REMOVE",
       id,
     })
-  }
+  }, [])
 
   return (
     <AppContext.Provider
