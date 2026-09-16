@@ -1,9 +1,9 @@
 import Favorites from "../components/Favorites"
-import { movies } from "../data/movies"
+import type { Movie } from "../types/Movie"
 
 type FavoritesPageProps = {
-  favorites: number[]
-  onToggleFavorite: (id: number) => void
+  favorites: Movie[]
+  onToggleFavorite: (movie: Movie) => void
 }
 
 function FavoritesPage({
@@ -12,7 +12,6 @@ function FavoritesPage({
 }: FavoritesPageProps) {
   return (
     <Favorites
-      movies={movies}
       favorites={favorites}
       onToggleFavorite={onToggleFavorite}
     />

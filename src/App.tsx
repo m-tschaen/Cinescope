@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useReducer } from "react"
 import { Routes, Route } from "react-router-dom"
 
 import Navbar from "./components/Navbar"
@@ -12,9 +12,33 @@ import Search from "./pages/Search"
 import NotFound from "./pages/NotFound"
 
 import { getPopularMovies } from "./services/tmdb"
+import type { Movie } from "./types/Movie"
+
+type FavoritesAction =
+  | { type: "ADD"; movie: Movie }
+  | { type: "REMOVE"; id: number }
+
+function favoritesReducer(
+  state: Movie[],
+  action: FavoritesAction
+): Movie[] {
+  switch (action.type) {
+    case "ADD":
+      return [...state, action.movie]
+
+    case "REMOVE":
+      return state.filter((movie) => movie.id !== action.id)
+
+    default:
+      return state
+  }
+}
 
 function App() {
-  const [favorites, setFavorites] = useState<number[]>([])
+  const [favorites, dispatch] = useReducer(
+    favoritesReducer,
+    []
+  )
 
   useEffect(() => {
     async function testTMDB() {
@@ -29,11 +53,21 @@ function App() {
     testTMDB()
   }, [])
 
-  function toggleFavorite(id: number) {
-    if (favorites.includes(id)) {
-      setFavorites(favorites.filter((favoriteId) => favoriteId !== id))
+  function toggleFavorite(movie: Movie) {
+    const isFavorite = favorites.some(
+      (favorite) => favorite.id === movie.id
+    )
+
+    if (isFavorite) {
+      dispatch({
+        type: "REMOVE",
+        id: movie.id,
+      })
     } else {
-      setFavorites([...favorites, id])
+      dispatch({
+        type: "ADD",
+        movie: movie,
+      })
     }
   }
 

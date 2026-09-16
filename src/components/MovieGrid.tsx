@@ -1,9 +1,10 @@
 import MovieCard from "./MovieCard"
 import { movies } from "../data/movies"
+import type { Movie } from "../types/Movie"
 
 type MovieGridProps = {
-  favorites: number[]
-  onToggleFavorite: (id: number) => void
+  favorites: Movie[]
+  onToggleFavorite: (movie: Movie) => void
   search: string
   onResetSearch: () => void
 }
@@ -23,6 +24,7 @@ function MovieGrid({
       <section>
         <p>Aucun film trouvé</p>
         <p>Essayez avec un autre titre ou une autre recherche.</p>
+
         <button onClick={onResetSearch}>
           Réinitialiser la recherche
         </button>
@@ -36,7 +38,9 @@ function MovieGrid({
         <MovieCard
           key={movie.id}
           movie={movie}
-          isFavorite={favorites.includes(movie.id)}
+          isFavorite={favorites.some(
+            (favorite) => favorite.id === movie.id
+          )}
           onToggleFavorite={onToggleFavorite}
         />
       ))}

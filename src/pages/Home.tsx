@@ -1,8 +1,9 @@
 import MovieGrid from "../components/MovieGrid"
+import type { Movie } from "../types/Movie"
 
 type HomeProps = {
-  favorites: number[]
-  onToggleFavorite: (id: number) => void
+  favorites: Movie[]
+  onToggleFavorite: (movie: Movie) => void
 }
 
 function Home({

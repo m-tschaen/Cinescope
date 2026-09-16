@@ -4,8 +4,8 @@ import { getPopularMovies } from "../services/tmdb"
 import type { Movie } from "../types/Movie"
 
 type MoviesProps = {
-  favorites: number[]
-  onToggleFavorite: (id: number) => void
+  favorites: Movie[]
+  onToggleFavorite: (movie: Movie) => void
 }
 
 function Movies({
@@ -92,7 +92,9 @@ function Movies({
           <MovieCard
             key={movie.id}
             movie={movie}
-            isFavorite={favorites.includes(movie.id)}
+            isFavorite={favorites.some(
+              (favorite) => favorite.id === movie.id
+            )}
             onToggleFavorite={onToggleFavorite}
           />
         ))}

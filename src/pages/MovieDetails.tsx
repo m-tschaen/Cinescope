@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getMovieDetails } from "../services/tmdb"
+import type { Movie } from "../types/Movie"
 
 type MovieDetailsProps = {
-  favorites: number[]
-  onToggleFavorite: (id: number) => void
+  favorites: Movie[]
+  onToggleFavorite: (movie: Movie) => void
 }
 
 type MovieDetailsData = {
@@ -90,7 +91,22 @@ function MovieDetails({
     )
   }
 
-  const isFavorite = favorites.includes(movie.id)
+  const favoriteMovie: Movie = {
+    id: movie.id,
+    title: movie.title,
+    poster: movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : "",
+    releaseDate: movie.release_date,
+    rating: movie.vote_average,
+    genres: movie.genres.map((genre) => genre.name),
+    duration: movie.runtime,
+    description: movie.overview,
+  }
+
+  const isFavorite = favorites.some(
+    (favorite) => favorite.id === movie.id
+  )
 
   return (
     <main>
@@ -124,7 +140,7 @@ function MovieDetails({
           .join(", ")}
       </p>
 
-      <button onClick={() => onToggleFavorite(movie.id)}>
+      <button onClick={() => onToggleFavorite(favoriteMovie)}>
         {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
       </button>
 
