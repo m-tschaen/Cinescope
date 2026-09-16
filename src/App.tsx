@@ -13,6 +13,10 @@ import NotFound from "./pages/NotFound"
 
 import { getPopularMovies } from "./services/tmdb"
 import type { Movie } from "./types/Movie"
+import type {
+  LibraryMovie,
+  LibraryStatus,
+} from "./types/LibraryMovie"
 
 type FavoritesAction =
   | { type: "ADD"; movie: Movie }
@@ -34,9 +38,64 @@ function favoritesReducer(
   }
 }
 
+type LibraryAction =
+  | {
+      type: "ADD"
+      movie: Movie
+      status: LibraryStatus
+    }
+  | {
+      type: "CHANGE_STATUS"
+      id: number
+      status: LibraryStatus
+    }
+  | {
+      type: "REMOVE"
+      id: number
+    }
+
+function libraryReducer(
+  state: LibraryMovie[],
+  action: LibraryAction
+): LibraryMovie[] {
+  switch (action.type) {
+    case "ADD":
+      return [
+        ...state,
+        {
+          movie: action.movie,
+          status: action.status,
+        },
+      ]
+
+    case "CHANGE_STATUS":
+      return state.map((item) =>
+        item.movie.id === action.id
+          ? {
+              ...item,
+              status: action.status,
+            }
+          : item
+      )
+
+    case "REMOVE":
+      return state.filter(
+        (item) => item.movie.id !== action.id
+      )
+
+    default:
+      return state
+  }
+}
+
 function App() {
-  const [favorites, dispatch] = useReducer(
+  const [favorites, dispatchFavorites] = useReducer(
     favoritesReducer,
+    []
+  )
+
+  const [library, dispatchLibrary] = useReducer(
+    libraryReducer,
     []
   )
 
@@ -59,16 +118,45 @@ function App() {
     )
 
     if (isFavorite) {
-      dispatch({
+      dispatchFavorites({
         type: "REMOVE",
         id: movie.id,
       })
     } else {
-      dispatch({
+      dispatchFavorites({
         type: "ADD",
         movie: movie,
       })
     }
+  }
+
+  function addToLibrary(
+    movie: Movie,
+    status: LibraryStatus
+  ) {
+    dispatchLibrary({
+      type: "ADD",
+      movie: movie,
+      status: status,
+    })
+  }
+
+  function changeLibraryStatus(
+    id: number,
+    status: LibraryStatus
+  ) {
+    dispatchLibrary({
+      type: "CHANGE_STATUS",
+      id: id,
+      status: status,
+    })
+  }
+
+  function removeFromLibrary(id: number) {
+    dispatchLibrary({
+      type: "REMOVE",
+      id: id,
+    })
   }
 
   return (
@@ -102,6 +190,7 @@ function App() {
             <MovieDetails
               favorites={favorites}
               onToggleFavorite={toggleFavorite}
+              onAddToLibrary={addToLibrary}
             />
           }
         />
@@ -118,7 +207,13 @@ function App() {
 
         <Route
           path="/library"
-          element={<Library />}
+          element={
+            <Library
+              library={library}
+              onChangeStatus={changeLibraryStatus}
+              onRemove={removeFromLibrary}
+            />
+          }
         />
 
         <Route

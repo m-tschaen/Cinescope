@@ -2,10 +2,15 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getMovieDetails } from "../services/tmdb"
 import type { Movie } from "../types/Movie"
+import type { LibraryStatus } from "../types/LibraryMovie"
 
 type MovieDetailsProps = {
   favorites: Movie[]
   onToggleFavorite: (movie: Movie) => void
+  onAddToLibrary: (
+    movie: Movie,
+    status: LibraryStatus
+  ) => void
 }
 
 type MovieDetailsData = {
@@ -31,6 +36,7 @@ type MovieDetailsData = {
 function MovieDetails({
   favorites,
   onToggleFavorite,
+  onAddToLibrary,
 }: MovieDetailsProps) {
   const { id } = useParams()
 
@@ -142,6 +148,14 @@ function MovieDetails({
 
       <button onClick={() => onToggleFavorite(favoriteMovie)}>
         {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+      </button>
+
+      <button
+        onClick={() =>
+          onAddToLibrary(favoriteMovie, "À regarder")
+        }
+      >
+        Ajouter à la bibliothèque
       </button>
 
       <Link to="/movies">Retour aux films</Link>
