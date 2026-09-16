@@ -1,15 +1,9 @@
 import MovieGrid from "../components/MovieGrid"
-import type { Movie } from "../types/Movie"
+import { useAppContext } from "../context/AppContext"
 
-type HomeProps = {
-  favorites: Movie[]
-  onToggleFavorite: (movie: Movie) => void
-}
+function Home() {
+  const { favorites, toggleFavorite } = useAppContext()
 
-function Home({
-  favorites,
-  onToggleFavorite,
-}: HomeProps) {
   return (
     <main>
       <h1>Découvrez votre prochain film</h1>
@@ -23,7 +17,7 @@ function Home({
 
         <MovieGrid
           favorites={favorites}
-          onToggleFavorite={onToggleFavorite}
+          onToggleFavorite={toggleFavorite}
           search=""
           onResetSearch={() => {}}
         />

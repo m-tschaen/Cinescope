@@ -1,19 +1,13 @@
 import Favorites from "../components/Favorites"
-import type { Movie } from "../types/Movie"
+import { useAppContext } from "../context/AppContext"
 
-type FavoritesPageProps = {
-  favorites: Movie[]
-  onToggleFavorite: (movie: Movie) => void
-}
+function FavoritesPage() {
+  const { favorites, toggleFavorite } = useAppContext()
 
-function FavoritesPage({
-  favorites,
-  onToggleFavorite,
-}: FavoritesPageProps) {
   return (
     <Favorites
       favorites={favorites}
-      onToggleFavorite={onToggleFavorite}
+      onToggleFavorite={toggleFavorite}
     />
   )
 }

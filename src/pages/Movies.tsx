@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react"
 import MovieCard from "../components/MovieCard"
 import { getPopularMovies } from "../services/tmdb"
+import { useAppContext } from "../context/AppContext"
 import type { Movie } from "../types/Movie"
 
-type MoviesProps = {
-  favorites: Movie[]
-  onToggleFavorite: (movie: Movie) => void
-}
+function Movies() {
+  const { favorites, toggleFavorite } = useAppContext()
 
-function Movies({
-  favorites,
-  onToggleFavorite,
-}: MoviesProps) {
   const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -95,7 +90,7 @@ function Movies({
             isFavorite={favorites.some(
               (favorite) => favorite.id === movie.id
             )}
-            onToggleFavorite={onToggleFavorite}
+            onToggleFavorite={toggleFavorite}
           />
         ))}
       </section>

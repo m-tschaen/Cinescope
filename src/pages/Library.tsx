@@ -1,22 +1,13 @@
-import type {
-  LibraryMovie,
-  LibraryStatus,
-} from "../types/LibraryMovie"
+import { useAppContext } from "../context/AppContext"
+import type { LibraryStatus } from "../types/LibraryMovie"
 
-type LibraryProps = {
-  library: LibraryMovie[]
-  onChangeStatus: (
-    id: number,
-    status: LibraryStatus
-  ) => void
-  onRemove: (id: number) => void
-}
+function Library() {
+  const {
+    library,
+    changeLibraryStatus,
+    removeFromLibrary,
+  } = useAppContext()
 
-function Library({
-  library,
-  onChangeStatus,
-  onRemove,
-}: LibraryProps) {
   const statuses: LibraryStatus[] = [
     "À regarder",
     "En cours",
@@ -48,7 +39,7 @@ function Library({
                   <select
                     value={item.status}
                     onChange={(event) =>
-                      onChangeStatus(
+                      changeLibraryStatus(
                         item.movie.id,
                         event.target.value as LibraryStatus
                       )
@@ -57,9 +48,11 @@ function Library({
                     <option value="À regarder">
                       À regarder
                     </option>
+
                     <option value="En cours">
                       En cours
                     </option>
+
                     <option value="Vu">
                       Vu
                     </option>
@@ -67,7 +60,7 @@ function Library({
 
                   <button
                     onClick={() =>
-                      onRemove(item.movie.id)
+                      removeFromLibrary(item.movie.id)
                     }
                   >
                     Retirer de la bibliothèque

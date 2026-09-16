@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import MovieCard from "./MovieCard"
 import type { Movie } from "../types/Movie"
 
@@ -20,7 +21,10 @@ function Favorites({
           <p>
             Ajoutez des films à vos favoris pour les retrouver ici.
           </p>
-          <button>Découvrir les films</button>
+
+          <Link to="/movies">
+            Découvrir les films
+          </Link>
         </>
       ) : (
         favorites.map((movie) => (

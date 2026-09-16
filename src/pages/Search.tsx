@@ -2,17 +2,12 @@ import { useEffect, useState } from "react"
 import SearchBar from "../components/SearchBar"
 import MovieCard from "../components/MovieCard"
 import { searchMovies } from "../services/tmdb"
+import { useAppContext } from "../context/AppContext"
 import type { Movie } from "../types/Movie"
 
-type SearchProps = {
-  favorites: Movie[]
-  onToggleFavorite: (movie: Movie) => void
-}
+function Search() {
+  const { favorites, toggleFavorite } = useAppContext()
 
-function Search({
-  favorites,
-  onToggleFavorite,
-}: SearchProps) {
   const [search, setSearch] = useState("")
   const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState(false)
@@ -88,7 +83,7 @@ function Search({
               isFavorite={favorites.some(
                 (favorite) => favorite.id === movie.id
               )}
-              onToggleFavorite={onToggleFavorite}
+              onToggleFavorite={toggleFavorite}
             />
           ))}
         </section>

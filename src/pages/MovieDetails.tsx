@@ -1,17 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getMovieDetails } from "../services/tmdb"
+import { useAppContext } from "../context/AppContext"
 import type { Movie } from "../types/Movie"
-import type { LibraryStatus } from "../types/LibraryMovie"
-
-type MovieDetailsProps = {
-  favorites: Movie[]
-  onToggleFavorite: (movie: Movie) => void
-  onAddToLibrary: (
-    movie: Movie,
-    status: LibraryStatus
-  ) => void
-}
 
 type MovieDetailsData = {
   id: number
@@ -33,11 +24,10 @@ type MovieDetailsData = {
   }[]
 }
 
-function MovieDetails({
-  favorites,
-  onToggleFavorite,
-  onAddToLibrary,
-}: MovieDetailsProps) {
+function MovieDetails() {
+  const { favorites, toggleFavorite, addToLibrary } =
+    useAppContext()
+
   const { id } = useParams()
 
   const [movie, setMovie] = useState<MovieDetailsData | null>(null)
@@ -97,7 +87,7 @@ function MovieDetails({
     )
   }
 
-  const favoriteMovie: Movie = {
+  const formattedMovie: Movie = {
     id: movie.id,
     title: movie.title,
     poster: movie.poster_path
@@ -146,13 +136,17 @@ function MovieDetails({
           .join(", ")}
       </p>
 
-      <button onClick={() => onToggleFavorite(favoriteMovie)}>
-        {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+      <button
+        onClick={() => toggleFavorite(formattedMovie)}
+      >
+        {isFavorite
+          ? "Retirer des favoris"
+          : "Ajouter aux favoris"}
       </button>
 
       <button
         onClick={() =>
-          onAddToLibrary(favoriteMovie, "À regarder")
+          addToLibrary(formattedMovie, "À regarder")
         }
       >
         Ajouter à la bibliothèque
