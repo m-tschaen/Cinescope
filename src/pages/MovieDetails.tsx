@@ -1,64 +1,23 @@
-import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import { getMovieDetails } from "../services/tmdb"
+import useMovieDetails from "../hooks/useMovieDetails"
 import { useAppContext } from "../context/AppContext"
 import type { Movie } from "../types/Movie"
 
-type MovieDetailsData = {
-  id: number
-  title: string
-  poster_path: string | null
-  release_date: string
-  vote_average: number
-  vote_count: number
-  genres: {
-    id: number
-    name: string
-  }[]
-  runtime: number
-  overview: string
-  original_language: string
-  production_countries: {
-    iso_3166_1: string
-    name: string
-  }[]
-}
-
 function MovieDetails() {
-  const { favorites, toggleFavorite, addToLibrary } =
-    useAppContext()
+  const {
+    favorites,
+    toggleFavorite,
+    addToLibrary,
+  } = useAppContext()
 
   const { id } = useParams()
 
-  const [movie, setMovie] = useState<MovieDetailsData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-  const [notFound, setNotFound] = useState(false)
-
-  useEffect(() => {
-    async function loadMovie() {
-      try {
-        setLoading(true)
-        setError(false)
-        setNotFound(false)
-
-        const data = await getMovieDetails(Number(id))
-
-        if (!data) {
-          setNotFound(true)
-          return
-        }
-
-        setMovie(data)
-      } catch {
-        setError(true)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadMovie()
-  }, [id])
+  const {
+    movie,
+    loading,
+    error,
+    notFound,
+  } = useMovieDetails(Number(id))
 
   if (loading) {
     return (
@@ -122,7 +81,10 @@ function MovieDetails() {
       <p>Nombre de votes : {movie.vote_count}</p>
 
       <p>
-        Genres : {movie.genres.map((genre) => genre.name).join(", ")}
+        Genres :{" "}
+        {movie.genres
+          .map((genre) => genre.name)
+          .join(", ")}
       </p>
 
       <p>Durée : {movie.runtime} minutes</p>
@@ -152,7 +114,9 @@ function MovieDetails() {
         Ajouter à la bibliothèque
       </button>
 
-      <Link to="/movies">Retour aux films</Link>
+      <Link to="/movies">
+        Retour aux films
+      </Link>
     </main>
   )
 }

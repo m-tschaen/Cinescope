@@ -1,55 +1,19 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import MovieCard from "../components/MovieCard"
-import { getPopularMovies } from "../services/tmdb"
+import useMovies from "../hooks/useMovies"
 import { useAppContext } from "../context/AppContext"
-import type { Movie } from "../types/Movie"
 
 function Movies() {
   const { favorites, toggleFavorite } = useAppContext()
-
-  const [movies, setMovies] = useState<Movie[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
   const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
 
-  async function loadMovies() {
-    try {
-      setLoading(true)
-      setError(false)
-
-      const data = await getPopularMovies(page)
-
-      const formattedMovies: Movie[] = data.results.map(
-        (movie: {
-          id: number
-          title: string
-          poster_path: string | null
-          release_date: string
-          vote_average: number
-        }) => ({
-          id: movie.id,
-          title: movie.title,
-          poster: movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-            : "",
-          releaseDate: movie.release_date,
-          rating: movie.vote_average,
-        })
-      )
-
-      setMovies(formattedMovies)
-      setTotalPages(data.total_pages)
-    } catch {
-      setError(true)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    loadMovies()
-  }, [page])
+  const {
+    movies,
+    loading,
+    error,
+    totalPages,
+    reload,
+  } = useMovies(page)
 
   if (loading) {
     return (
@@ -71,7 +35,7 @@ function Movies() {
           Une erreur est survenue lors de la récupération des données. Veuillez réessayer.
         </p>
 
-        <button onClick={loadMovies}>
+        <button onClick={reload}>
           Réessayer
         </button>
       </main>
