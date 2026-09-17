@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import useMovieDetails from "../hooks/useMovieDetails"
 import { useAppContext } from "../context/AppContext"
 import MovieError from "../components/MovieError"
-import type { Movie } from "../types/Movie"
+import { toMovie } from "../utils/movieMapper"
 
 function MovieDetails() {
   const {
@@ -51,14 +51,8 @@ function MovieDetails() {
     return <MovieError notFound={false} />
   }
 
-  const formattedMovie: Movie = {
-    id: movie.id,
-    title: movie.title,
-    poster: movie.poster_path
-      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-      : "",
-    releaseDate: movie.release_date,
-    rating: movie.vote_average,
+  const formattedMovie = {
+    ...toMovie(movie),
     genres: movie.genres.map((genre) => genre.name),
     duration: movie.runtime,
     description: movie.overview,

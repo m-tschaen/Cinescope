@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import SearchBar from "../components/SearchBar"
 import SearchResults from "../components/SearchResults"
 import useMovieSearch from "../hooks/useMovieSearch"
@@ -25,10 +25,6 @@ function Search() {
     search,
     reset,
   } = useMovieSearch()
-
-  useEffect(() => {
-    console.log("Recherche modifiée :", searchValue)
-  }, [searchValue])
 
   function handleSearch() {
     if (!searchValue.trim()) {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { getPopularMovies } from "../services/tmdb"
 import type { Movie } from "../types/Movie"
+import { toMovie } from "../utils/movieMapper"
 
 function useMovies(page: number) {
   const [movies, setMovies] = useState<Movie[]>([])
@@ -15,15 +16,7 @@ function useMovies(page: number) {
 
       const data = await getPopularMovies(page)
 
-      const formattedMovies: Movie[] = data.results.map((movie) => ({
-        id: movie.id,
-        title: movie.title,
-        poster: movie.poster_path
-          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-          : "",
-        releaseDate: movie.release_date,
-        rating: movie.vote_average,
-      }))
+      const formattedMovies: Movie[] = data.results.map(toMovie)
 
       setMovies(formattedMovies)
       setTotalPages(data.total_pages)

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { searchMovies } from "../services/tmdb"
 import type { Movie } from "../types/Movie"
+import { toMovie } from "../utils/movieMapper"
 
 function useMovieSearch() {
   const [movies, setMovies] = useState<Movie[]>([])
@@ -20,15 +21,7 @@ function useMovieSearch() {
 
       const data = await searchMovies(query)
 
-      const formattedMovies: Movie[] = data.results.map((movie) => ({
-        id: movie.id,
-        title: movie.title,
-        poster: movie.poster_path
-          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-          : "",
-        releaseDate: movie.release_date,
-        rating: movie.vote_average,
-      }))
+      const formattedMovies: Movie[] = data.results.map(toMovie)
 
       setMovies(formattedMovies)
     } catch {
