@@ -2,11 +2,7 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
 
-import {
-  AppProvider,
-  useAppContext,
-} from "./AppContext"
-
+import { AppProvider, useAppContext } from "./AppContext"
 import type { Movie } from "../types/Movie"
 
 const movie: Movie = {
@@ -15,6 +11,27 @@ const movie: Movie = {
   poster: "",
   releaseDate: "2014",
   rating: 8.7,
+}
+
+function FavoritesTest() {
+  const {
+    favorites,
+    toggleFavorite,
+  } = useAppContext()
+
+  return (
+    <div>
+      <button onClick={() => toggleFavorite(movie)}>
+        Ajouter Interstellar aux favoris
+      </button>
+
+      {favorites.map((favorite) => (
+        <p key={favorite.id}>
+          Favori : {favorite.title}
+        </p>
+      ))}
+    </div>
+  )
 }
 
 function LibraryTest() {
@@ -27,11 +44,7 @@ function LibraryTest() {
 
   return (
     <div>
-      <button
-        onClick={() =>
-          addToLibrary(movie, "À regarder")
-        }
-      >
+      <button onClick={() => addToLibrary(movie, "À regarder")}>
         Ajouter Interstellar
       </button>
 
@@ -42,10 +55,7 @@ function LibraryTest() {
 
           <button
             onClick={() =>
-              changeLibraryStatus(
-                item.movie.id,
-                "Vu"
-              )
+              changeLibraryStatus(item.movie.id, "Vu")
             }
           >
             Marquer comme vu
@@ -63,6 +73,28 @@ function LibraryTest() {
     </div>
   )
 }
+
+describe("Favoris", () => {
+  it("ajoute un film aux favoris", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <AppProvider>
+        <FavoritesTest />
+      </AppProvider>
+    )
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "Ajouter Interstellar aux favoris",
+      })
+    )
+
+    expect(
+      screen.getByText("Favori : Interstellar")
+    ).toBeInTheDocument()
+  })
+})
 
 describe("Bibliothèque", () => {
   it("ajoute un film dans la bibliothèque", async () => {
