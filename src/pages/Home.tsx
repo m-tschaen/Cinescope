@@ -12,31 +12,44 @@ function Home() {
   } = useMovies(1)
 
   return (
-    <main>
-      <h1>Découvrez votre prochain film</h1>
+    <main className="min-h-screen bg-gray-950 px-6 py-10 text-white">
+      <section className="mx-auto max-w-7xl">
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold md:text-5xl">
+            Découvrez votre prochain film
+          </h1>
 
-      <p>
-        Explorez des films, trouvez vos favoris et construisez votre bibliothèque personnelle.
-      </p>
+          <p className="mx-auto max-w-2xl text-lg text-gray-400">
+            Explorez des films, trouvez vos favoris et construisez
+            votre bibliothèque personnelle.
+          </p>
+        </div>
 
-      <section>
-        <h2>Films populaires</h2>
+        <section>
+          <h2 className="mb-6 text-2xl font-bold">
+            Films populaires
+          </h2>
 
-        {loading && (
-          <p>Chargement des films...</p>
-        )}
+          {loading && (
+            <p className="text-gray-400">
+              Chargement des films...
+            </p>
+          )}
 
-        {error && (
-          <p>Impossible de charger les films.</p>
-        )}
+          {error && (
+            <p className="rounded-lg bg-red-950 p-4 text-red-300">
+              Impossible de charger les films.
+            </p>
+          )}
 
-        {!loading && !error && (
-          <MovieGrid
-            movies={movies}
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-          />
-        )}
+          {!loading && !error && (
+            <MovieGrid
+              movies={movies}
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+            />
+          )}
+        </section>
       </section>
     </main>
   )

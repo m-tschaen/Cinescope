@@ -17,66 +17,91 @@ function Movies() {
 
   if (loading) {
     return (
-      <main>
-        <h1>Films</h1>
-        <p>Chargement des films...</p>
+      <main className="min-h-screen bg-gray-950 px-6 py-10 text-white">
+        <div className="mx-auto max-w-7xl">
+          <h1 className="mb-6 text-4xl font-bold">
+            Films
+          </h1>
+
+          <p className="text-gray-400">
+            Chargement des films...
+          </p>
+        </div>
       </main>
     )
   }
 
   if (error) {
     return (
-      <main>
-        <h1>Films</h1>
+      <main className="min-h-screen bg-gray-950 px-6 py-10 text-white">
+        <div className="mx-auto max-w-7xl">
+          <h1 className="mb-6 text-4xl font-bold">
+            Films
+          </h1>
 
-        <p>Impossible de charger les films.</p>
+          <div className="rounded-xl bg-red-950 p-6">
+            <p className="mb-2 font-bold text-red-300">
+              Impossible de charger les films.
+            </p>
 
-        <p>
-          Une erreur est survenue lors de la récupération des données. Veuillez réessayer.
-        </p>
+            <p className="mb-4 text-red-200">
+              Une erreur est survenue lors de la récupération des
+              données. Veuillez réessayer.
+            </p>
 
-        <button onClick={reload}>
-          Réessayer
-        </button>
+            <button
+              onClick={reload}
+              className="cursor-pointer rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700"
+            >
+              Réessayer
+            </button>
+          </div>
+        </div>
       </main>
     )
   }
 
   return (
-    <main>
-      <h1>Films</h1>
+    <main className="min-h-screen bg-gray-950 px-6 py-10 text-white">
+      <div className="mx-auto max-w-7xl">
+        <h1 className="mb-8 text-4xl font-bold">
+          Films
+        </h1>
 
-      <section>
-        {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            isFavorite={favorites.some(
-              (favorite) => favorite.id === movie.id
-            )}
-            onToggleFavorite={toggleFavorite}
-          />
-        ))}
-      </section>
+        <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {movies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              isFavorite={favorites.some(
+                (favorite) => favorite.id === movie.id
+              )}
+              onToggleFavorite={toggleFavorite}
+            />
+          ))}
+        </section>
 
-      <div>
-        <button
-          onClick={() => setPage(page - 1)}
-          disabled={page === 1}
-        >
-          Page précédente
-        </button>
+        <div className="mt-10 flex items-center justify-center gap-4">
+          <button
+            onClick={() => setPage(page - 1)}
+            disabled={page === 1}
+            className="cursor-pointer rounded-lg bg-gray-800 px-4 py-2 font-medium hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Page précédente
+          </button>
 
-        <p>
-          Page {page} sur {totalPages}
-        </p>
+          <p className="text-gray-300">
+            Page {page} sur {totalPages}
+          </p>
 
-        <button
-          onClick={() => setPage(page + 1)}
-          disabled={page === totalPages}
-        >
-          Page suivante
-        </button>
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={page === totalPages}
+            className="cursor-pointer rounded-lg bg-gray-800 px-4 py-2 font-medium hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Page suivante
+          </button>
+        </div>
       </div>
     </main>
   )
