@@ -5,10 +5,14 @@ function FavoritesPage() {
   const { favorites, toggleFavorite } = useAppContext()
 
   return (
-    <Favorites
-      favorites={favorites}
-      onToggleFavorite={toggleFavorite}
-    />
+    <main className="min-h-screen bg-gray-950 px-6 py-10 text-white">
+      <div className="mx-auto max-w-7xl">
+        <Favorites
+          favorites={favorites}
+          onToggleFavorite={toggleFavorite}
+        />
+      </div>
+    </main>
   )
 }
 

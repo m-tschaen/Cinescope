@@ -13,28 +13,38 @@ function Favorites({
 }: FavoritesProps) {
   return (
     <section>
-      <h1>Mes favoris</h1>
+      <h1 className="mb-8 text-4xl font-bold">
+        Mes favoris
+      </h1>
 
       {favorites.length === 0 ? (
-        <>
-          <p>Vous n'avez pas encore de favoris.</p>
-          <p>
+        <div className="rounded-xl bg-gray-800 p-8 text-center">
+          <p className="mb-2 text-xl font-bold">
+            Vous n'avez encore aucun film favori.
+          </p>
+
+          <p className="mb-6 text-gray-400">
             Ajoutez des films à vos favoris pour les retrouver ici.
           </p>
 
-          <Link to="/movies">
+          <Link
+            to="/movies"
+            className="inline-block rounded-lg bg-red-600 px-5 py-3 font-medium text-white hover:bg-red-700"
+          >
             Découvrir les films
           </Link>
-        </>
+        </div>
       ) : (
-        favorites.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            isFavorite={true}
-            onToggleFavorite={onToggleFavorite}
-          />
-        ))
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {favorites.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              isFavorite={true}
+              onToggleFavorite={onToggleFavorite}
+            />
+          ))}
+        </div>
       )}
     </section>
   )

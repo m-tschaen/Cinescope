@@ -16,9 +16,14 @@ function SearchResults({
 }: SearchResultsProps) {
   if (hasSearched && movies.length === 0) {
     return (
-      <section>
-        <p>Aucun résultat pour cette recherche.</p>
-        <p>Essayez avec un autre titre.</p>
+      <section className="rounded-xl bg-gray-800 p-8 text-center">
+        <p className="mb-2 text-xl font-bold text-white">
+          Aucun résultat pour cette recherche.
+        </p>
+
+        <p className="text-gray-400">
+          Essayez avec un autre titre.
+        </p>
       </section>
     )
   }
@@ -28,7 +33,7 @@ function SearchResults({
   }
 
   return (
-    <section>
+    <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}

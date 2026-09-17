@@ -50,38 +50,48 @@ function Search() {
     : popularError
 
   return (
-    <main>
-      <h1>Rechercher un film</h1>
+    <main className="min-h-screen bg-gray-950 px-6 py-10 text-white">
+      <div className="mx-auto max-w-7xl">
+        <h1 className="mb-8 text-4xl font-bold">
+          Rechercher un film
+        </h1>
 
-      <SearchBar
-        search={searchValue}
-        onSearchChange={setSearchValue}
-        onSearch={handleSearch}
-        onReset={handleReset}
-      />
+        <SearchBar
+          search={searchValue}
+          onSearchChange={setSearchValue}
+          onSearch={handleSearch}
+          onReset={handleReset}
+        />
 
-      {!isSearching && popularLoading && (
-        <p>Chargement des films...</p>
-      )}
-
-      {isSearching && searchLoading && (
-        <p>Recherche en cours...</p>
-      )}
-
-      {error && (
-        <p>Impossible d'effectuer la recherche.</p>
-      )}
-
-      {!popularLoading &&
-        !searchLoading &&
-        !error && (
-          <SearchResults
-            movies={movies}
-            favorites={favorites}
-            hasSearched={isSearching && hasSearched}
-            onToggleFavorite={toggleFavorite}
-          />
+        {!isSearching && popularLoading && (
+          <p className="text-gray-400">
+            Chargement des films...
+          </p>
         )}
+
+        {isSearching && searchLoading && (
+          <p className="text-gray-400">
+            Recherche en cours...
+          </p>
+        )}
+
+        {error && (
+          <p className="rounded-lg bg-red-950 p-4 text-red-300">
+            Impossible d'effectuer la recherche.
+          </p>
+        )}
+
+        {!popularLoading &&
+          !searchLoading &&
+          !error && (
+            <SearchResults
+              movies={movies}
+              favorites={favorites}
+              hasSearched={isSearching && hasSearched}
+              onToggleFavorite={toggleFavorite}
+            />
+          )}
+      </div>
     </main>
   )
 }
