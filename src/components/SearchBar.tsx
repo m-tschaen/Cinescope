@@ -2,12 +2,14 @@ type SearchBarProps = {
   search: string
   onSearchChange: (value: string) => void
   onSearch: () => void
+  onReset: () => void
 }
 
 function SearchBar({
   search,
   onSearchChange,
   onSearch,
+  onReset,
 }: SearchBarProps) {
   return (
     <div>
@@ -22,6 +24,7 @@ function SearchBar({
       />
 
       <button onClick={onSearch}>Rechercher</button>
+      <button onClick={onReset}>Réinitialiser</button>
     </div>
   )
 }

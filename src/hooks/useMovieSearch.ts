@@ -47,12 +47,20 @@ function useMovieSearch() {
     }
   }
 
+  function reset() {
+    setMovies([])
+    setLoading(false)
+    setError(false)
+    setHasSearched(false)
+  }
+
   return {
     movies,
     loading,
     error,
     hasSearched,
     search,
+    reset,
   }
 }
 
