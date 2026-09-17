@@ -20,23 +20,15 @@ function useMovieSearch() {
 
       const data = await searchMovies(query)
 
-      const formattedMovies: Movie[] = data.results.map(
-        (movie: {
-          id: number
-          title: string
-          poster_path: string | null
-          release_date: string
-          vote_average: number
-        }) => ({
-          id: movie.id,
-          title: movie.title,
-          poster: movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-            : "",
-          releaseDate: movie.release_date,
-          rating: movie.vote_average,
-        })
-      )
+      const formattedMovies: Movie[] = data.results.map((movie) => ({
+        id: movie.id,
+        title: movie.title,
+        poster: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : "",
+        releaseDate: movie.release_date,
+        rating: movie.vote_average,
+      }))
 
       setMovies(formattedMovies)
     } catch {
