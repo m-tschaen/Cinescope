@@ -1,8 +1,15 @@
+import type {
+  TmdbMovieDetails,
+  TmdbMoviesResponse,
+} from "../types/Tmdb"
+
 const TMDB_URL = "https://api.themoviedb.org/3"
 
 const token = import.meta.env.VITE_TMDB_TOKEN
 
-export async function getPopularMovies(page: number = 1) {
+export async function getPopularMovies(
+  page: number = 1
+): Promise<TmdbMoviesResponse> {
   const response = await fetch(
     `${TMDB_URL}/movie/popular?language=fr-FR&page=${page}`,
     {
@@ -22,7 +29,9 @@ export async function getPopularMovies(page: number = 1) {
   return data
 }
 
-export async function searchMovies(query: string) {
+export async function searchMovies(
+  query: string
+): Promise<TmdbMoviesResponse> {
   const response = await fetch(
     `${TMDB_URL}/search/movie?query=${encodeURIComponent(query)}&language=fr-FR`,
     {
@@ -42,7 +51,9 @@ export async function searchMovies(query: string) {
   return data
 }
 
-export async function getMovieDetails(id: number) {
+export async function getMovieDetails(
+  id: number
+): Promise<TmdbMovieDetails | null> {
   const response = await fetch(
     `${TMDB_URL}/movie/${id}?language=fr-FR`,
     {
