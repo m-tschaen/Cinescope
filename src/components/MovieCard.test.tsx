@@ -103,4 +103,20 @@ describe("MovieCard", () => {
 
     expect(onToggleFavorite).toHaveBeenCalled()
   })
+
+  it("affiche un message quand l'image est indisponible", () => {
+    render(
+      <MemoryRouter>
+        <MovieCard
+          movie={movie}
+          isFavorite={false}
+          onToggleFavorite={() => {}}
+        />
+      </MemoryRouter>
+    )
+
+    expect(
+      screen.getByText("Affiche indisponible")
+    ).toBeInTheDocument()
+  })
 })

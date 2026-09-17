@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import useMovieDetails from "../hooks/useMovieDetails"
 import { useAppContext } from "../context/AppContext"
+import MovieError from "../components/MovieError"
 import type { Movie } from "../types/Movie"
 
 function MovieDetails() {
@@ -43,22 +44,11 @@ function MovieDetails() {
   }
 
   if (notFound) {
-    return (
-      <main>
-        <h1>Film introuvable</h1>
-        <p>
-          Le film demandé n'existe pas ou n'est plus disponible.
-        </p>
-      </main>
-    )
+    return <MovieError notFound={true} />
   }
 
   if (error || !movie) {
-    return (
-      <main>
-        <p>Impossible de charger ce film.</p>
-      </main>
-    )
+    return <MovieError notFound={false} />
   }
 
   const formattedMovie: Movie = {
@@ -96,7 +86,7 @@ function MovieDetails() {
       <p>Nombre de votes : {movie.vote_count}</p>
 
       <p>
-        Genres :{" "}
+        Genres:{" "}
         {movie.genres
           .map((genre) => genre.name)
           .join(", ")}
@@ -107,7 +97,7 @@ function MovieDetails() {
       <p>Langue originale : {movie.original_language}</p>
 
       <p>
-        Pays de production :{" "}
+        Pays de production:{" "}
         {movie.production_countries
           .map((country) => country.name)
           .join(", ")}
