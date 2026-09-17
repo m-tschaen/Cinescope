@@ -1,29 +1,9 @@
 import { useEffect, useState } from "react"
 import { getMovieDetails } from "../services/tmdb"
-
-export type MovieDetailsData = {
-  id: number
-  title: string
-  poster_path: string | null
-  release_date: string
-  vote_average: number
-  vote_count: number
-  genres: {
-    id: number
-    name: string
-  }[]
-  runtime: number
-  overview: string
-  original_language: string
-  production_countries: {
-    iso_3166_1: string
-    name: string
-  }[]
-}
+import type { TmdbMovieDetails } from "../types/Tmdb"
 
 function useMovieDetails(id: number) {
-  const [movie, setMovie] =
-    useState<MovieDetailsData | null>(null)
+  const [movie, setMovie] = useState<TmdbMovieDetails | null>(null)
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
